@@ -182,6 +182,5 @@ cython_debug/
 
 
 .ipynb_checkpoints/
-*.csv
 *.xlsx
 data/
