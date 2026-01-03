@@ -1,3 +1,7 @@
+"""
+Netflix veri seti üzerinde istatistiksel analizler, aykırı değer tespiti
+ve dağılım incelemeleri yapan modül.
+"""
 import warnings
 from collections import Counter
 from scipy import stats
@@ -37,13 +41,13 @@ def analyze_content_distribution(df):
     total_titles = len(df)
 
     print(f"\nTotal Titles in Dataset: {total_titles}")
-    print(f"Content Type Breakdown:")
+    print("Content Type Breakdown:")
     for content_type, count in type_counts.items():
         percentage = (count / total_titles) * 100
         print(f"  {content_type}: {count} ({percentage:.2f}%)")
 
     # Rating distribution
-    print(f"\nRating Distribution (Top 10):")
+    print("\nRating Distribution (Top 10):")
     rating_counts = df['rating'].value_counts().head(10)
     for rating, count in rating_counts.items():
         print(f"  {rating}: {count} titles")
@@ -56,13 +60,13 @@ def analyze_content_distribution(df):
     genre_counts = Counter(all_genres)
     top_genres = pd.Series(dict(genre_counts.most_common(10)))
 
-    print(f"\nTop 10 Genres:")
+    print("\nTop 10 Genres:")
     for genre, count in top_genres.items():
         percentage = (count / len(df)) * 100
         print(f"  {genre}: {count} ({percentage:.2f}%)")
 
     # Summary statistics
-    print(f"\nContent Distribution Summary:")
+    print("\nContent Distribution Summary:")
     print(f"  Total Movies: {type_counts.get('Movie', 0)}")
     print(f"  Total TV Shows: {type_counts.get('TV Show', 0)}")
     print(f"  Unique Ratings: {df['rating'].nunique()}")
@@ -73,7 +77,7 @@ def analyze_content_distribution(df):
 
     # Quartile analysis for content distribution
     type_by_rating = pd.crosstab(df['rating'], df['type'])
-    print(f"\nContent Type by Rating Distribution:")
+    print("\nContent Type by Rating Distribution:")
     print(type_by_rating)
 
     # Distribution of genres
@@ -91,7 +95,7 @@ def analyze_content_distribution(df):
     # Skewness and distribution shape
     genre_skewness = stats.skew(genre_series.values)
     genre_kurtosis = stats.kurtosis(genre_series.values)
-    print(f"\nDistribution Shape:")
+    print("\nDistribution Shape:")
     print(
         f"  Skewness: {genre_skewness:.4f} (Right-skewed - few dominant genres)")
     print(f"  Kurtosis: {genre_kurtosis:.4f}")
@@ -114,7 +118,7 @@ def analyze_content_distribution(df):
     dominant_genres = genre_series[genre_series >
                                    upper_bound_genre].sort_values(ascending=False)
 
-    print(f"\nDominant Genres (Statistical Outliers using IQR method):")
+    print("\nDominant Genres (Statistical Outliers using IQR method):")
     print(f"  Outlier threshold: > {upper_bound_genre:.0f} titles")
     print(f"  Dominant genres found: {len(dominant_genres)}")
 
@@ -128,15 +132,15 @@ def analyze_content_distribution(df):
     rating_z_scores = np.abs(stats.zscore(rating_series.values))
     anomalous_ratings = rating_series[rating_z_scores > 2]
 
-    print(f"\nAnomalous Rating Distribution (Z-score > 2):")
+    print("\nAnomalous Rating Distribution (Z-score > 2):")
     if len(anomalous_ratings) > 0:
         for rating, count in anomalous_ratings.items():
             print(f"  - {rating}: {count} titles")
     else:
-        print(f"  No anomalies detected in rating distribution.")
+        print("  No anomalies detected in rating distribution.")
 
     # Data quality assessment
-    print(f"\nData Quality Assessment:")
+    print("\nData Quality Assessment:")
     missing_listed_in = df['listed_in'].isnull().sum()
     print(
         f"  Missing genre information: {missing_listed_in} ({missing_listed_in/len(df)*100:.2f}%)")
@@ -157,7 +161,7 @@ def analyze_release_dates(df):
     # Year added distribution
     year_added_counts = df['year_added'].value_counts().sort_index()
 
-    print(f"\nContent Added to Netflix by Year:")
+    print("\nContent Added to Netflix by Year:")
     print(f"  Min year: {year_added_counts.index.min()}")
     print(f"  Max year: {year_added_counts.index.max()}")
     print(f"  Total years in dataset: {len(year_added_counts)}")
@@ -170,7 +174,7 @@ def analyze_release_dates(df):
                    'July', 'August', 'September', 'October', 'November', 'December']
     month_counts = df['month_added'].value_counts().reindex(month_order)
 
-    print(f"\nContent Added by Month (All Years):")
+    print("\nContent Added by Month (All Years):")
     month_stats = {
         'Sum': month_counts.sum(),
         'Mean': month_counts.mean(),
@@ -186,7 +190,7 @@ def analyze_release_dates(df):
     release_year_counts = df['release_year'].value_counts(
     ).sort_index(ascending=False).head(10)
 
-    print(f"\nTop 10 Release Years:")
+    print("\nTop 10 Release Years:")
     for year, count in release_year_counts.items():
         if not np.isnan(year):
             print(f"  {int(year)}: {count} titles")
@@ -197,7 +201,7 @@ def analyze_release_dates(df):
     # Quartile analysis for year added
     year_quartiles = df['year_added'].quantile([0.25, 0.5, 0.75])
 
-    print(f"\nYear Added Quartile Analysis:")
+    print("\nYear Added Quartile Analysis:")
     print(f"  Q1 (25%): {year_quartiles[0.25]:.0f}")
     print(f"  Q2 (50%/Median): {year_quartiles[0.5]:.0f}")
     print(f"  Q3 (75%): {year_quartiles[0.75]:.0f}")
@@ -207,7 +211,7 @@ def analyze_release_dates(df):
     year_skewness = stats.skew(df['year_added'].dropna())
     year_kurtosis = stats.kurtosis(df['year_added'].dropna())
 
-    print(f"\nYear Added Distribution Shape:")
+    print("\nYear Added Distribution Shape:")
     print(f"  Mean: {df['year_added'].mean():.2f}")
     print(f"  Median: {df['year_added'].median():.2f}")
     print(f"  Std Dev: {df['year_added'].std():.2f}")
@@ -215,7 +219,7 @@ def analyze_release_dates(df):
     print(f"  Kurtosis: {year_kurtosis:.4f}")
 
     # Month distribution statistics
-    print(f"\nMonth Added Distribution Statistics:")
+    print("\nMonth Added Distribution Statistics:")
     print(f"  Mean titles per month: {month_counts.mean():.2f}")
     print(f"  Median: {month_counts.median():.2f}")
     print(
@@ -236,7 +240,7 @@ def analyze_release_dates(df):
     outlier_years = df[(df['year_added'] < lower_bound_year)
                        | (df['year_added'] > upper_bound_year)]
 
-    print(f"\nOutliers in Year Added (IQR method):")
+    print("\nOutliers in Year Added (IQR method):")
     print(f"  Normal bounds: [{lower_bound_year:.0f}, {upper_bound_year:.0f}]")
     print(
         f"  Outliers found: {len(outlier_years)} ({len(outlier_years)/len(df)*100:.2f}%)")
@@ -252,15 +256,15 @@ def analyze_release_dates(df):
     month_z_scores = np.abs(stats.zscore(month_counts.values))
     anomalous_months = month_counts[month_z_scores > 2]
 
-    print(f"\nAnomalous Months (Z-score > 2):")
+    print("\nAnomalous Months (Z-score > 2):")
     if len(anomalous_months) > 0:
         for month, count in anomalous_months.items():
             print(f"  - {month}: {count} titles")
     else:
-        print(f"  No significant anomalies in monthly distribution.")
+        print("  No significant anomalies in monthly distribution.")
 
     # Release year vs addition year analysis
-    print(f"\nRelease Year Analysis:")
+    print("\nRelease Year Analysis:")
     release_year_clean = df['release_year'].dropna()
     print(
         f"  Release year range: {release_year_clean.min():.0f} - {release_year_clean.max():.0f}")
@@ -269,7 +273,7 @@ def analyze_release_dates(df):
 
     # Normality test for dates
     stat, p_value = stats.shapiro(df['year_added'].dropna())
-    print(f"\nNormality Test (Shapiro-Wilk) for Year Added:")
+    print("\nNormality Test (Shapiro-Wilk) for Year Added:")
     print(f"  p-value: {p_value:.6f}")
     print(f"  Distribution: {'Non-normal' if p_value < 0.05 else 'Normal'}")
 
@@ -294,20 +298,20 @@ def analyze_countries(df):
     print("\n[BASELINE] Simple Aggregations & Country Statistics")
     print("-" * 90)
 
-    print(f"\nCountry Production Overview:")
+    print("\nCountry Production Overview:")
     print(f"  Total unique countries: {len(country_series)}")
     print(
         f"  Total productions (with multiple countries): {len(all_countries)}")
     print(
         f"  Average: {len(all_countries) / len(df) * 100:.2f}% of content is international")
 
-    print(f"\nTop 15 Countries by Title Count:")
+    print("\nTop 15 Countries by Title Count:")
     top_countries = country_series.nlargest(15)
     for country, count in top_countries.items():
         percentage = (count / len(df)) * 100
         print(f"  {country}: {count} titles ({percentage:.2f}%)")
 
-    print(f"\nCountry Summary Statistics:")
+    print("\nCountry Summary Statistics:")
     print(f"  Sum (total productions): {country_series.sum()}")
     print(f"  Mean (avg per country): {country_series.mean():.2f}")
     print(f"  Min (smallest): {country_series.min()}")
@@ -322,7 +326,7 @@ def analyze_countries(df):
     q3_country = country_series.quantile(0.75)
     iqr_country = q3_country - q1_country
 
-    print(f"\nCountry Production Quartile Analysis:")
+    print("\nCountry Production Quartile Analysis:")
     print(f"  Q1 (25%): {q1_country:.2f}")
     print(f"  Q2 (50%/Median): {q2_country:.2f}")
     print(f"  Q3 (75%): {q3_country:.2f}")
@@ -333,13 +337,13 @@ def analyze_countries(df):
     country_skewness = stats.skew(country_series.values)
     country_kurtosis = stats.kurtosis(country_series.values)
 
-    print(f"\nCountry Distribution Shape:")
+    print("\nCountry Distribution Shape:")
     print(
         f"  Skewness: {country_skewness:.4f} (Right-skewed - few dominant countries)")
     print(f"  Kurtosis: {country_kurtosis:.4f} (Heavy tails - extreme values)")
 
     # Content type by top countries
-    print(f"\nContent Type Distribution in Top 10 Countries:")
+    print("\nContent Type Distribution in Top 10 Countries:")
     top_10_countries = top_countries.head(10).index.tolist()
     for country in top_10_countries:
         country_mask = df['country'].str.contains(country, na=False)
@@ -361,7 +365,7 @@ def analyze_countries(df):
     outlier_countries = country_series[(country_series > upper_bound_country) |
                                        (country_series < lower_bound_country)]
 
-    print(f"\nOutlier Countries (IQR method):")
+    print("\nOutlier Countries (IQR method):")
     print(
         f"  Normal range: [{lower_bound_country:.2f}, {upper_bound_country:.2f}]")
     print(f"  Countries with unusual production: {len(outlier_countries)}")
@@ -373,7 +377,7 @@ def analyze_countries(df):
             print(f"  - {country}: {count} titles (Z-score: {z_score:.2f})")
 
     # Z-score method
-    print(f"\nZ-Score Anomaly Detection (|z| > 2.5):")
+    print("\nZ-Score Anomaly Detection (|z| > 2.5):")
     country_z_scores = np.abs(stats.zscore(country_series.values))
     extreme_countries = country_series[country_z_scores > 2.5]
 
@@ -383,7 +387,7 @@ def analyze_countries(df):
             print(f"  - {country}: {count} titles")
 
     # Data quality
-    print(f"\nData Quality Assessment:")
+    print("\nData Quality Assessment:")
     missing_country = df['country'].isnull().sum()
     print(
         f"  Missing country information: {missing_country} ({missing_country/len(df)*100:.2f}%)")
@@ -409,7 +413,7 @@ def analyze_cast(df):
     print("\n[BASELINE] Simple Aggregations & Cast Statistics")
     print("-" * 70)
 
-    print(f"\nCast Overview:")
+    print("\nCast Overview:")
     print(f"  Total unique actors: {len(cast_series)}")
     print(f"  Total cast appearances: {len(all_cast)}")
     print(
@@ -421,7 +425,7 @@ def analyze_cast(df):
         percentage = (count / len(df)) * 100
         print(f"  {actor}: {count} titles ({percentage:.2f}% of catalog)")
 
-    print(f"\nCast Summary Statistics:")
+    print("\nCast Summary Statistics:")
     print(f"  Sum (total appearances): {cast_series.sum()}")
     print(f"  Mean (avg per actor): {cast_series.mean():.2f}")
     print(f"  Min (lowest): {cast_series.min()}")
@@ -436,7 +440,7 @@ def analyze_cast(df):
     q3_cast = cast_series.quantile(0.75)
     iqr_cast = q3_cast - q1_cast
 
-    print(f"\nActor Appearance Quartile Analysis:")
+    print("\nActor Appearance Quartile Analysis:")
     print(f"  Q1 (25%): {q1_cast:.2f}")
     print(f"  Q2 (50%/Median): {q2_cast:.2f}")
     print(f"  Q3 (75%): {q3_cast:.2f}")
@@ -447,13 +451,13 @@ def analyze_cast(df):
     cast_skewness = stats.skew(cast_series.values)
     cast_kurtosis = stats.kurtosis(cast_series.values)
 
-    print(f"\nActor Distribution Shape:")
+    print("\nActor Distribution Shape:")
     print(
         f"  Skewness: {cast_skewness:.4f} (Right-skewed - few prolific actors)")
     print(f"  Kurtosis: {cast_kurtosis:.4f} (Heavy tails - extreme actors)")
 
     # Content type analysis for top actors
-    print(f"\nContent Type Distribution for Top 10 Actors:")
+    print("\nContent Type Distribution for Top 10 Actors:")
     top_10_actors = top_cast.head(10).index.tolist()
     for actor in top_10_actors:
         actor_mask = df['cast'].str.contains(actor, na=False)
@@ -473,19 +477,19 @@ def analyze_cast(df):
     outlier_actors = cast_series[(cast_series > upper_bound_cast) |
                                  (cast_series < lower_bound_cast)]
 
-    print(f"\nOutlier Actors (IQR method):")
+    print("\nOutlier Actors (IQR method):")
     print(f"  Normal range: [{lower_bound_cast:.2f}, {upper_bound_cast:.2f}]")
     print(
         f"  Prolific actors detected: {len(outlier_actors[outlier_actors > upper_bound_cast])}")
 
     if len(outlier_actors[outlier_actors > upper_bound_cast]) > 0:
-        print(f"\nProlific Actors (Upper Outliers):")
+        print("\nProlific Actors (Upper Outliers):")
         for actor, count in outlier_actors[outlier_actors > upper_bound_cast].sort_values(ascending=False).items():
             z_score = (count - cast_series.mean()) / cast_series.std()
             print(f"  - {actor}: {count} titles (Z-score: {z_score:.2f})")
 
     # Z-score method
-    print(f"\nZ-Score Anomaly Detection (|z| > 2.5):")
+    print("\nZ-Score Anomaly Detection (|z| > 2.5):")
     cast_z_scores = np.abs(stats.zscore(cast_series.values))
     extreme_actors = cast_series[cast_z_scores > 2.5]
 
@@ -495,7 +499,7 @@ def analyze_cast(df):
             print(f"  - {actor}: {count} titles")
 
     # Data quality
-    print(f"\nData Quality Assessment:")
+    print("\nData Quality Assessment:")
     missing_cast = df['cast'].isnull().sum()
     print(
         f"  Missing cast information: {missing_cast} ({missing_cast/len(df)*100:.2f}%)")
@@ -504,7 +508,7 @@ def analyze_cast(df):
     if len(cast_series) > 3:
         stat, p_value = stats.shapiro(cast_series.values[:5000] if len(
             cast_series) > 5000 else cast_series.values)
-        print(f"\nNormality Test (Shapiro-Wilk) for Actor Distribution:")
+        print("\nNormality Test (Shapiro-Wilk) for Actor Distribution:")
         print(f"  p-value: {p_value:.6f}")
         print(
             f"  Distribution: {'Non-normal' if p_value < 0.05 else 'Normal'}")
