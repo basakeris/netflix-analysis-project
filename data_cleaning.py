@@ -1,10 +1,8 @@
 """
-Data cleaning module for the Netflix dataset.
 It handles missing values, fixes date formats, and converts durations to numeric values.
 """
 import os
 import pandas as pd
-
 
 def load_data(csv_path):
     """
@@ -102,11 +100,10 @@ def run_cleaning_pipeline(raw_csv_path, output_path):
 
         # 5. Save
         df.to_csv(output_path, index=False)
-        print(f"\n✅ SUCCESS! Cleaned data saved to: {output_path}")
+        print(f"\n SUCCESS! Cleaned data saved to: {output_path}")
         print(df.head())
 
 if __name__ == "__main__":
-    # AYNI KLASÖRDE OLDUKLARI İÇİN SADECE İSİM YAZIYORUZ
     RAW_FILE = "netflix_titles.csv"
     OUTPUT_FILE = "netflix_cleaned.csv"
 
