@@ -1,6 +1,6 @@
 """
-Netflix veri seti üzerinde istatistiksel analizler, aykırı değer tespiti
-ve dağılım incelemeleri yapan modül.
+A module that performs statistical analyses, outlier detection,
+and distribution analysis on the Netflix dataset.
 """
 import warnings
 from collections import Counter
