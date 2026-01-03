@@ -2,9 +2,7 @@ import os
 import pandas as pd
 import pytest
 
-# -----------------------------
 # PATHS
-# -----------------------------
 RAW_FILE = "netflix_titles.csv"
 CLEANED_FILE = "netflix_cleaned.csv"
 
@@ -19,10 +17,7 @@ CHART_FILES = [
     "chart_8_actors.png",
 ]
 
-# -----------------------------
 # DATA LOADING TESTS
-# -----------------------------
-
 def test_raw_data_exists():
     """Raw dataset should exist."""
     assert os.path.exists(RAW_FILE), "Raw Netflix dataset not found."
@@ -38,11 +33,7 @@ def test_cleaned_data_loadable():
     df = pd.read_csv(CLEANED_FILE)
     assert not df.empty, "Cleaned dataset is empty."
 
-
-# -----------------------------
 # DATA CLEANING TESTS
-# -----------------------------
-
 def test_required_columns_exist():
     """Key columns created during cleaning should exist."""
     df = pd.read_csv(CLEANED_FILE)
@@ -67,11 +58,7 @@ def test_no_nulls_in_critical_columns():
     for col in critical_columns:
         assert df[col].isnull().sum() == 0, f"Null values found in {col}"
 
-
-# -----------------------------
 # ANALYSIS DATA VALIDATION
-# -----------------------------
-
 def test_content_type_distribution():
     """Dataset should contain Movies or TV Shows."""
     df = pd.read_csv(CLEANED_FILE)
@@ -94,11 +81,7 @@ def test_country_data_present():
     assert "country" in df.columns
     assert df["country"].notnull().sum() > 0
 
-
-# -----------------------------
 # VISUALIZATION OUTPUT TESTS
-# -----------------------------
-
 def test_charts_generated():
     """All visualization output files should exist."""
     missing = [f for f in CHART_FILES if not os.path.exists(f)]
@@ -110,20 +93,12 @@ def test_chart_files_not_empty():
     for chart in CHART_FILES:
         assert os.path.getsize(chart) > 0, f"{chart} is empty."
 
-
-# -----------------------------
 # NOTEBOOK / REPORT CONSISTENCY
-# -----------------------------
-
 def test_notebook_exists():
     """Final report notebook should exist."""
     assert os.path.exists("Final_Project_Report.ipynb"), "Final notebook not found."
 
-
-# -----------------------------
 # BASIC DATA QUALITY TEST
-# -----------------------------
-
 def test_dataset_size_reasonable():
     """Dataset should contain a reasonable number of records."""
     df = pd.read_csv(CLEANED_FILE)

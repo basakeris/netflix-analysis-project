@@ -93,7 +93,6 @@ plt.savefig("chart_6_heatmap.png")
 plt.show()
 
 # 7. Content added by month
-# Using pre-processed 'month_added' column from clean data
 order = [
     "January","February","March","April","May","June",
     "July","August","September","October","November","December"

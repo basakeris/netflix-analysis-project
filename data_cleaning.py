@@ -10,7 +10,6 @@ def load_data(csv_path):
     """
     print("--- 1. Loading Data ---")
     try:
-        # Dosya yolunu kontrol et
         if not os.path.exists(csv_path):
             print(f"ERROR: The file '{csv_path}' was not found in this folder.")
             print("Please make sure 'netflix_titles.csv' is in the same folder as this script.")
