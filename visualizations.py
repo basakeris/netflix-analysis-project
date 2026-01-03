@@ -2,6 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+df = pd.read_csv("netflix_titles.csv")
 sns.set_theme(style="darkgrid")
 
 yc = df["release_year"].value_counts().sort_index().reset_index()
