@@ -4,6 +4,7 @@ It handles missing values, fixes date formats, and converts durations to numeric
 import os
 import pandas as pd
 
+
 def load_data(csv_path):
     """
     Loads the raw Netflix dataset from the specified CSV path.
@@ -11,8 +12,10 @@ def load_data(csv_path):
     print("--- 1. Loading Data ---")
     try:
         if not os.path.exists(csv_path):
-            print(f"ERROR: The file '{csv_path}' was not found in this folder.")
-            print("Please make sure 'netflix_titles.csv' is in the same folder as this script.")
+            print(
+                f"ERROR: The file '{csv_path}' was not found in this folder.")
+            print(
+                "Please make sure 'netflix_titles.csv' is in the same folder as this script.")
             return None
 
         df = pd.read_csv(csv_path)
@@ -22,6 +25,7 @@ def load_data(csv_path):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
 
 def clean_missing_values(df):
     """
@@ -44,9 +48,11 @@ def clean_missing_values(df):
     df = df.dropna(subset=['date_added', 'rating'])
     after_drop = len(df)
 
-    print(f"Dropped {before_drop - after_drop} rows due to missing Date or Rating.")
+    print(
+        f"Dropped {before_drop - after_drop} rows due to missing Date or Rating.")
 
     return df
+
 
 def process_dates(df):
     """
@@ -64,6 +70,7 @@ def process_dates(df):
     print("Dates converted. Added 'year_added' and 'month_added' columns.")
     return df
 
+
 def process_duration(df):
     """
     Converts duration strings (e.g., '90 min') into numeric values.
@@ -74,11 +81,13 @@ def process_duration(df):
 
     # Extract number if 'min' exists, else None
     df['duration_numeric'] = df['duration_numeric'].apply(
-        lambda x: int(x.split(' ')[0]) if isinstance(x, str) and 'min' in x else None
+        lambda x: int(x.split(' ')[0]) if isinstance(
+            x, str) and 'min' in x else None
     )
 
     print("Converted movie durations to numeric format.")
     return df
+
 
 def run_cleaning_pipeline(raw_csv_path, output_path):
     """
@@ -101,6 +110,7 @@ def run_cleaning_pipeline(raw_csv_path, output_path):
         df.to_csv(output_path, index=False)
         print(f"\n SUCCESS! Cleaned data saved to: {output_path}")
         print(df.head())
+
 
 if __name__ == "__main__":
     RAW_FILE = "netflix_titles.csv"

@@ -1,6 +1,9 @@
 """
 Generates charts for content growth, countries, genres, and ratings.
 """
+from collections import Counter
+import numpy as np
+from scipy import stats
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -30,7 +33,8 @@ plt.show()
 
 # 2. Top 10 countries
 c_data = df[df["country"] != "Unknown Country"]["country"]
-c = c_data.astype(str).str.split(", ").explode().value_counts().head(10).to_frame()
+c = c_data.astype(str).str.split(
+    ", ").explode().value_counts().head(10).to_frame()
 
 plt.figure(figsize=(10, 8))
 sns.heatmap(c, annot=True, fmt="d", cmap="Reds")
@@ -94,8 +98,8 @@ plt.show()
 
 # 7. Content added by month
 order = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
 ]
 m = df["month_added"].value_counts().reindex(order).reset_index()
 m.columns = ["month", "count"]
@@ -122,3 +126,152 @@ plt.xlabel("Number of Titles")
 plt.ylabel("Actor / Actress")
 plt.savefig("chart_8_actors.png")
 plt.show()
+
+# ============ ADVANCED LEVEL: BOX PLOTS ============
+print("\n=== ADVANCED ANALYSIS: Outlier Detection ===\n")
+
+# 9. Release Year - Outlier Detection (Box Plot)
+plt.figure(figsize=(12, 6))
+sns.boxplot(data=df, y='release_year', color='skyblue')
+plt.title("Release Year Distribution - Outlier Detection (Box Plot)")
+plt.ylabel("Release Year")
+plt.axhline(y=df['release_year'].quantile(0.25),
+            color='red', linestyle='--', label='Q1')
+plt.axhline(y=df['release_year'].quantile(0.75),
+            color='green', linestyle='--', label='Q3')
+plt.legend()
+plt.savefig("chart_9_outliers_boxplot.png")
+plt.show()
+
+# 10. Duration - Outlier Detection
+df_with_duration = df[df['duration_numeric'].notna()]
+plt.figure(figsize=(12, 6))
+sns.boxplot(data=df_with_duration, y='duration_numeric', color='lightcoral')
+plt.title("Movie Duration Distribution - Outlier Detection (Box Plot)")
+plt.ylabel("Duration (minutes)")
+plt.savefig("chart_10_duration_outliers.png")
+plt.show()
+
+# ============ DATA SCIENCE LEVEL: ANOMALY DETECTION ============
+print("\n=== DATA SCIENCE: Z-Score Anomaly Detection ===\n")
+
+
+# 11. Z-Score Anomaly Detection for Release Year
+z_scores = np.abs(stats.zscore(df['release_year'].dropna()))
+anomalies = df[np.abs(stats.zscore(df['release_year'].dropna())) > 2.5]
+
+print(f"Anomalies Found (Z-score > 2.5): {len(anomalies)}")
+if len(anomalies) > 0:
+    print(f"Anomalous Years: {anomalies['release_year'].unique()}")
+
+plt.figure(figsize=(12, 6))
+plt.scatter(df.index, df['release_year'], alpha=0.6, label='Normal Data', s=30)
+plt.scatter(anomalies.index, anomalies['release_year'],
+            color='red', label='Anomalies (Z-score > 2.5)', s=100, marker='X')
+plt.title("Release Year - Z-Score Anomaly Detection")
+plt.xlabel("Index")
+plt.ylabel("Release Year")
+plt.legend()
+plt.savefig("chart_11_zscore_anomalies.png")
+plt.show()
+
+# 12. IQR Method - Content Count by Type (Anomaly Detection)
+type_counts = df['type'].value_counts()
+Q1 = type_counts.quantile(0.25)
+Q3 = type_counts.quantile(0.75)
+IQR = Q3 - Q1
+upper_bound = Q3 + 1.5 * IQR
+lower_bound = Q1 - 1.5 * IQR
+
+outlier_types = type_counts[(type_counts > upper_bound)
+                            | (type_counts < lower_bound)]
+
+print(f"\nIQR Method - Content Type Analysis:")
+print(f"Upper Bound: {upper_bound}, Lower Bound: {lower_bound}")
+print(f"Outliers: {outlier_types.to_dict()}")
+
+plt.figure(figsize=(10, 6))
+colors = ['red' if x > upper_bound or x < lower_bound else 'skyblue'
+          for x in type_counts.values]
+sns.barplot(x=type_counts.index, y=type_counts.values, palette=colors)
+plt.title("Content Type Distribution - IQR Anomaly Detection")
+plt.axhline(y=upper_bound, color='red', linestyle='--', label='Upper Bound')
+plt.axhline(y=lower_bound, color='orange', linestyle='--', label='Lower Bound')
+plt.legend()
+plt.savefig("chart_12_iqr_anomalies.png")
+plt.show()
+
+# 13. Genre Distribution - Statistical Anomalies
+
+all_genres = []
+for genres in df['listed_in'].dropna():
+    all_genres.extend([g.strip() for g in genres.split(',')])
+
+genre_counts = Counter(all_genres)
+genre_series = pd.Series(dict(genre_counts))
+
+# IQR for genres
+q1_genre = genre_series.quantile(0.25)
+q3_genre = genre_series.quantile(0.75)
+iqr_genre = q3_genre - q1_genre
+upper_bound_genre = q3_genre + 1.5 * iqr_genre
+
+dominant_genres = genre_series[genre_series >
+                               upper_bound_genre].sort_values(ascending=False)
+
+print(f"\nDominant Genres (Statistical Outliers):")
+for genre, count in dominant_genres.items():
+    z_score = (count - genre_series.mean()) / genre_series.std()
+    print(f"  {genre}: {count} titles (Z-score: {z_score:.2f})")
+
+plt.figure(figsize=(14, 6))
+colors_genre = ['red' if x > upper_bound_genre else 'lightblue'
+                for x in genre_series.values]
+genre_series.sort_values().plot(kind='barh', color=colors_genre, figsize=(12, 8))
+plt.title("Genre Distribution - Anomaly Detection (IQR Method)")
+plt.xlabel("Count")
+plt.axvline(x=upper_bound_genre, color='red',
+            linestyle='--', label='Anomaly Threshold')
+plt.legend()
+plt.savefig("chart_13_genre_anomalies.png")
+plt.tight_layout()
+plt.show()
+
+# 14. Country Analysis - Anomaly Detection
+all_countries = []
+for countries in df['country'].dropna():
+    if countries != "Unknown Country":
+        all_countries.extend([c.strip() for c in countries.split(',')])
+
+country_counts = Counter(all_countries)
+country_series = pd.Series(dict(country_counts))
+
+# IQR for countries
+q1_country = country_series.quantile(0.25)
+q3_country = country_series.quantile(0.75)
+iqr_country = q3_country - q1_country
+upper_bound_country = q3_country + 1.5 * iqr_country
+
+outlier_countries = country_series[country_series >
+                                   upper_bound_country].sort_values(ascending=False)
+
+print(f"\nDominant Countries (Anomaly Detection):")
+for country, count in outlier_countries.items():
+    z_score = (count - country_series.mean()) / country_series.std()
+    print(f"  {country}: {count} titles (Z-score: {z_score:.2f})")
+
+plt.figure(figsize=(12, 8))
+top_20_countries = country_series.nlargest(20)
+colors_country = ['red' if x > upper_bound_country else 'lightgreen'
+                  for x in top_20_countries.values]
+top_20_countries.plot(kind='barh', color=colors_country, figsize=(12, 8))
+plt.title("Top 20 Countries - Anomaly Detection (IQR Method)")
+plt.xlabel("Count")
+plt.axvline(x=upper_bound_country, color='red',
+            linestyle='--', label='Anomaly Threshold')
+plt.legend()
+plt.savefig("chart_14_countries_anomalies.png")
+plt.tight_layout()
+plt.show()
+
+print("\n=== All visualizations saved successfully! ===")
