@@ -6,8 +6,6 @@ import sys
 import os
 import subprocess
 
-# Importing custom modules
-# We use try-except to ensure the necessary files exist before proceeding.
 try:
     import data_cleaning
     import advanced_analysis
@@ -22,18 +20,14 @@ def main():
     print("NETFLIX DATA ANALYSIS PIPELINE - MAIN CONTROL")
     print("="*70)
 
-    # Define file paths here to avoid hardcoding in multiple places
     raw_data_path = 'netflix_titles.csv'
     cleaned_data_path = 'netflix_cleaned.csv'
-
-    # STEP 1: DATA CLEANING
 
     print("\nInitiating Data Cleaning Process...")
 
     if os.path.exists(raw_data_path):
         try:
-            # Calling the function directly from data_cleaning.py
-            # This is much safer and cleaner than using exec()
+
             data_cleaning.run_cleaning_pipeline(
                 raw_data_path, cleaned_data_path)
             print("✓ Data cleaning completed successfully.")
