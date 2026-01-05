@@ -39,12 +39,9 @@ def main():
         print("Please place the dataset in the correct folder.")
         sys.exit(1)
 
-    # STEP 2: ADVANCED STATISTICAL ANALYSIS
-
     print("\nPerforming Statistical Analysis...")
 
     try:
-        # Calling the main() function from advanced_analysis.py
         advanced_analysis.main()
         print("✓ Analysis completed successfully.")
     except AttributeError:
@@ -52,13 +49,9 @@ def main():
     except Exception as e:
         print(f"ERROR during analysis: {e}")
 
-    # STEP 3: VISUALIZATION
-
     print("\nGenerating Visualizations...")
 
     # Since visualizations.py runs code at the global scope (not inside a function),
-    # importing it would run it immediately at the top of the script.
-    # Therefore, we use subprocess to run it as a separate script after step 2.
     visualization_script = "visualizations.py"
 
     if os.path.exists(visualization_script):
