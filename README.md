@@ -7,13 +7,13 @@
 ![SciPy](https://img.shields.io/badge/SciPy-Statistics-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualization-013243?style=for-the-badge&logo=matplotlib&logoColor=white)
 
-**Comprehensive analysis of Netflix catalog combining data cleaning, statistical analysis, and advanced visualizations**
+Comprehensive analysis of Netflix catalog combining data cleaning, statistical analysis, and advanced visualizations
 
 </div>
 
 ---
 
-## 📋 Overview
+## Overview
 
 Netflix Data Analysis Project transforms raw Netflix catalog data into meaningful insights. The application processes datasets through a comprehensive pipeline: data cleaning, advanced statistical analysis, and anomaly detection, ultimately producing publication-ready visualizations.
 
@@ -26,12 +26,12 @@ Netflix Data Analysis Project transforms raw Netflix catalog data into meaningfu
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ```
 Language              Python 3.7+
 Data Processing       Pandas, NumPy
-Statistical Analysis  SciPy, statsmodels
+Statistical Analysis  SciPy
 Visualization         Matplotlib, Seaborn
 Testing              pytest
 Data Format          CSV
@@ -39,7 +39,7 @@ Data Format          CSV
 
 ---
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Python 3.7 or higher
@@ -73,7 +73,7 @@ cp /path/to/netflix_titles.csv .
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Run Complete Pipeline
 ```bash
@@ -90,7 +90,7 @@ python visualizations.py     # Charts only
 
 ---
 
-## 📊 Pipeline Overview
+## Pipeline Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -100,10 +100,10 @@ python visualizations.py     # Charts only
                      ▼
         ┌────────────────────────────┐
         │   data_cleaning.py         │
-        │ ✓ Load & validate          │
-        │ ✓ Handle missing values    │
-        │ ✓ Standardize formats      │
-        │ ✓ Normalize durations      │
+        │ - Load & validate          │
+        │ - Handle missing values    │
+        │ - Standardize formats      │
+        │ - Normalize durations      │
         └────────────┬───────────────┘
                      │
                      ▼
@@ -116,10 +116,10 @@ python visualizations.py     # Charts only
          ▼                       ▼
 ┌─────────────────────┐  ┌────────────────────┐
 │advanced_analysis.py │  │visualizations.py   │
-│ • Distributions     │  │ • Growth charts    │
-│ • Statistics        │  │ • Country heatmaps │
-│ • Anomaly detect.   │  │ • Genre trends     │
-│ • Temporal trends   │  │ • PNG exports      │
+│ - Distributions     │  │ - Growth charts    │
+│ - Statistics        │  │ - Country heatmaps │
+│ - Anomaly detect.   │  │ - Genre trends     │
+│ - Temporal trends   │  │ - PNG exports      │
 └─────────────────────┘  └────────────────────┘
          │                       │
          └───────────┬───────────┘
@@ -127,15 +127,15 @@ python visualizations.py     # Charts only
                      ▼
         ┌────────────────────────────┐
         │   Insights & Reports       │
-        │ • Statistical summaries    │
-        │ • Visualization files      │
-        │ • Analysis documentation   │
+        │ - Statistical summaries    │
+        │ - Visualization files      │
+        │ - Analysis documentation   │
         └────────────────────────────┘
 ```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 | File | Purpose |
 |------|---------|
@@ -149,7 +149,7 @@ python visualizations.py     # Charts only
 
 ---
 
-## 💡 Module Details
+## Module Details
 
 ### data_cleaning.py
 Implements a 6-step cleaning pipeline:
@@ -175,7 +175,7 @@ Three main charts generated:
 
 ---
 
-## 📈 Use Cases
+## Use Cases
 
 | Use Case | Command | Output |
 |----------|---------|--------|
@@ -186,7 +186,7 @@ Three main charts generated:
 
 ---
 
-## 📤 Generated Output
+## Generated Output
 
 | File | Type | Purpose |
 |------|------|---------|
@@ -197,17 +197,13 @@ Three main charts generated:
 
 ---
 
-## 🏆 Course Requirements & Extra Credit
-
-<div align="center">
+## Course Requirements & Extra Credit
 
 | Tier | Feature | Status | Points |
 |------|---------|--------|--------|
-| **Visualization** | Matplotlib + Seaborn | ✅ Implemented | +5 |
-| **Dataset** | Messy data with documented cleaning | ✅ Implemented | +5 |
-| **Analysis** | Advanced stats + Anomaly detection | ✅ Implemented | +15 |
-
-</div>
+| **Visualization** | Matplotlib + Seaborn | Implemented | +5 |
+| **Dataset** | Messy data with documented cleaning | Implemented | +5 |
+| **Analysis** | Advanced stats + Anomaly detection | Implemented | +15 |
 
 **Cleaning Documentation:** See `data_cleaning.py` for step-by-step explanations of how messy data is transformed into analysis-ready datasets.
 
@@ -215,7 +211,7 @@ Three main charts generated:
 
 ---
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
@@ -227,7 +223,7 @@ Three main charts generated:
 
 ---
 
-## 📝 Requirements
+## Requirements
 
 ```
 pandas>=1.3.0           # Data manipulation
@@ -240,20 +236,10 @@ pytest>=6.0.0           # Testing framework
 
 ---
 
-## 📌 Notes
+## Notes
 
 - Dataset must be placed as `netflix_titles.csv` in project root
 - Requires Python 3.7 or higher for compatibility
 - All charts exported as PNG for universal compatibility
 - Console warnings suppressed for clean output
 - All file paths use relative imports for portability
-
----
-
-<div align="center">
-
-Made with ❤️ to understand Netflix
-
-[Report Issue](https://github.com/yourusername/netflix-analysis-project/issues) • [Documentation](./README.md)
-
-</div>
