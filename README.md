@@ -202,10 +202,10 @@ Three main charts generated:
 | Tier | Feature | Status | Points |
 |------|---------|--------|--------|
 | **Visualization** | Matplotlib + Seaborn | Implemented | +5 |
-| **Dataset** | Messy data with documented cleaning | Implemented | +5 |
+| **Dataset** | Clean downloaded data (baseline) | Implemented | baseline |
 | **Analysis** | Advanced stats + Anomaly detection | Implemented | +15 |
 
-**Cleaning Documentation:** See `data_cleaning.py` for step-by-step explanations of how messy data is transformed into analysis-ready datasets.
+**Cleaning Documentation:** See `data_cleaning.py` for step-by-step explanations of how data is transformed into analysis-ready datasets.
 
 **Analysis Documentation:** See `advanced_analysis.py` for implementation of IQR/Z-score outlier detection and advanced statistical reporting.
 
